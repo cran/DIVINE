@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Characteristics and Outcomes by Ceiling of Care of Subjects Hospitalized with COVID-19 During Four Waves of the Pandemic in a Metropolitan Area: A Multicenter Cohort Study",
+  author   = "N. Pallarès and C. Tebé and G. Abelenda-Alonso and A. Rombauts and I. Oriol and A. F. Simonetti and A. Rodríguez-Molinero and E. Izquierdo and V. Díaz-Brito and G. Molist and G. Gómez Melis and J. Carratalà and S. Videla and MetroSud and DIVINE study groups",
+  journal  = "Infectious Diseases and Therapy",
+  year     = "2023",
+  volume   = "12",
+  number   = "1",
+  pages    = "273--289",
+  doi      = "10.1007/s40121-022-00705-w"
+)
