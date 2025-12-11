@@ -1,7 +1,7 @@
 Package: DIVINE
 Type: Package
 Title: Curated Datasets and Tools for Epidemiological Data Analysis
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person("Natàlia", "Pallarès", email = "npallares@igtp.cat", role = c("aut", "cre")),
              person("João", "Carmezim", email = "jcarmezim@igtp.cat", role = "aut"),
              person("Pau", "Satorra", email = "psatorra@igtp.cat", role = "aut"),
@@ -21,11 +21,11 @@ LazyData: true
 Imports: dplyr, fmsb, ggplot2, gtsummary, haven, openxlsx, plotly,
         purrr, rlang, scales, stringr, tibble, tidyselect
 NeedsCompilation: no
-Packaged: 2025-11-06 13:23:26 UTC; jcarmezim
+Packaged: 2025-12-11 07:29:02 UTC; jcarmezim
 Author: Natàlia Pallarès [aut, cre],
   João Carmezim [aut],
   Pau Satorra [aut],
   Lucia Blanc [aut],
   Cristian Tebé [aut]
 Repository: CRAN
-Date/Publication: 2025-11-11 10:00:21 UTC
+Date/Publication: 2025-12-11 07:50:02 UTC

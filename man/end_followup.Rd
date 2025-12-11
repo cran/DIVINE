@@ -11,10 +11,10 @@ A data frame with 5813 rows and 8 columns
 \item{covid_wave:}{A factor with levels \verb{Wave 1}, \verb{Wave 2}, \verb{Wave 3}, and \verb{Wave 5}. COVID-19 wave.}
 \item{center:}{A factor with levels \verb{Hospital A}, \verb{Hospital B}, \verb{Hospital C}, \verb{Hospital D}, and  \verb{Hospital E}. Center of admission}
 \item{clinical_stability_days:}{Days from hospital admission to clinical stability}
-\item{exitus_days:}{Days from hospital admission to exitus}
-\item{discharge_days:}{Days from hospital admission to discharge}
-\item{discharge:}{A factor with levels \code{No} and \code{Yes}. Was the patient discharge from the hospital?}
 \item{exitus:}{A factor with levels \code{No} and \code{Yes}. Did the patient die during hospital admission?}
+\item{exitus_days:}{Days from hospital admission to exitus}
+\item{discharge:}{A factor with levels \code{No} and \code{Yes}. Was the patient discharge from the hospital?}
+\item{discharge_days:}{Days from hospital admission to discharge}
 }
 }
 \usage{

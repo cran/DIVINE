@@ -6,19 +6,19 @@
 \usage{
 multi_plot(
   data,
-  x_var = NULL,
-  y_var = NULL,
+  x = NULL,
+  y = NULL,
   plot_type = NULL,
   interactive = FALSE,
   fill_color = "steelblue",
   color = "black",
   bin_width = NULL,
   group = NULL,
-  facet_var = NULL,
-  z_var = NULL,
+  facet = NULL,
+  radar = NULL,
   radar_color = "steelblue",
-  radar_vlabels = NULL,
-  radar_vlcex = 1,
+  radar_labels = NULL,
+  radar_cex = 1,
   radar_ref_lev = "Yes",
   title = NULL,
   x_lab = NULL,
@@ -33,9 +33,9 @@ multi_plot(
 \arguments{
 \item{data}{A data frame or tibble containing your data.}
 
-\item{x_var}{Character; name of the variable for x‑axis (required for all plot types except spider).}
+\item{x}{Character; name of the variable for x-axis (required for all plot types except spider).}
 
-\item{y_var}{Character; name of the variable for y‑axis (required for boxplot, violin, scatter, and heatmap).}
+\item{y}{Character; name of the variable for y-axis (required for boxplot, violin, scatter, and heatmap).}
 
 \item{plot_type}{Character; one of \code{"histogram"}, \code{"density"}, \code{"boxplot"},
 \code{"barplot"}, \code{"violin"}, \code{"scatter"}, \code{"heatmap"}, or \code{"spider"}.}
@@ -43,7 +43,7 @@ multi_plot(
 \item{interactive}{Logical; if \code{TRUE}, returns a Plotly interactive plot
 (not available for spider/radar charts). Default: \code{FALSE}.}
 
-\item{fill_color}{Character; fill color for non‑grouped geoms (default \code{"steelblue"}).}
+\item{fill_color}{Character; fill color for non-grouped geoms (default \code{"steelblue"}).}
 
 \item{color}{Character; outline/line color (default \code{"black"}).}
 
@@ -51,27 +51,27 @@ multi_plot(
 
 \item{group}{Character; name of grouping variable (optional).}
 
-\item{facet_var}{Character; name of variable to facet by (optional).}
+\item{facet}{Character; name of variable to facet by (optional).}
 
-\item{z_var}{Character vector; names of numeric variables for spider plot (only for \code{"spider"}).}
+\item{radar}{Character vector; names of exactly 5 variables for spider plot (only for \code{"spider"}).}
 
 \item{radar_color}{Character or vector; border/fill color for spider chart (only for \code{"spider"}).}
 
-\item{radar_vlabels}{Character or vector; names of the variables for spider chart (only for \code{"spider"}).}
+\item{radar_labels}{Character or vector; names of the variables for spider chart (only for \code{"spider"}).}
 
-\item{radar_vlcex}{Numeric; font size for variable labels in the spider chart (only for \code{"spider"}).}
+\item{radar_cex}{Numeric; font size for variable labels in the spider chart (only for \code{"spider"}).}
 
 \item{radar_ref_lev}{Character; reference level for factors included in the spider chart (only for \code{"spider"}).}
 
 \item{title}{Character; plot title (optional).}
 
-\item{x_lab}{Character; x‑axis label (defaults to \code{x_var}).}
+\item{x_lab}{Character; x-axis label (defaults to \code{x}).}
 
-\item{y_lab}{Character; y‑axis label (defaults to \code{y_var} or \code{"Count"}).}
+\item{y_lab}{Character; y-axis label (defaults to \code{y} or \code{"Count"}).}
 
 \item{legend_position}{Character; one of \code{"right","left","top","bottom","none"} (default \code{"right"}).}
 
-\item{axis_text_angle}{Numeric; rotation angle (degrees) for x‑axis tick labels (default \code{0}).}
+\item{axis_text_angle}{Numeric; rotation angle (degrees) for x-axis tick labels (default \code{0}).}
 
 \item{axis_text_size}{Numeric; size of axis text in pts (default \code{12}).}
 
@@ -89,20 +89,20 @@ heatmap, or spider (radar)—either as static ggplot2 objects or interactive Plo
 }
 \details{
 \itemize{
-\item \strong{Histogram:} requires \code{x_var}; uses \code{geom_histogram()}. Use for continuous numeric variables only.
-\item \strong{Density:} requires \code{x_var}; uses \code{geom_density()}. It should be numeric.
-\item \strong{Boxplot/Violin:} require both \code{x_var} and \code{y_var}; automatically groups by \code{x_var} or by \code{group} if provided, with dynamic dodge width.
-\item \strong{Barplot:} requires \code{x_var}; counts occurrences. Use for categorical variables only.
-\item \strong{Scatter:} requires both \code{x_var} and \code{y_var}; uses \code{geom_point()}. Both variables must be numeric.
-\item \strong{Heatmap:} requires both \code{x_var} and \code{y_var}. Both variables must be categorical.
-\item \strong{Spider:} requires \code{z_var} (vector of variables); uses \code{fmsb::radarchart()}, static only.
+\item \strong{Histogram:} requires \code{x}; uses \code{geom_histogram()}. Use for continuous numeric variables only.
+\item \strong{Density:} requires \code{x}; uses \code{geom_density()}. It should be numeric.
+\item \strong{Boxplot/Violin:} require both \code{x} and \code{y}; automatically groups by \code{x} or by \code{group} if provided, with dynamic dodge width.
+\item \strong{Barplot:} requires \code{x}; counts occurrences. Use for categorical variables only.
+\item \strong{Scatter:} requires both \code{x} and \code{y}; uses \code{geom_point()}. Both variables must be numeric.
+\item \strong{Heatmap:} requires both \code{x} and \code{y}. Both variables must be categorical.
+\item \strong{Spider:} requires \code{radar} (vector of variables); uses \code{fmsb::radarchart()}, static only.
 }
 }
 \examples{
 
 multi_plot(icu,
-  x_var = "icu_enter_days",
-  y_var = "vent_mec_start_days",
+  x = "icu_enter_days",
+  y = "vent_mec_start_days",
   plot_type = "scatter",
   color = "darkred",
   title = "ICU exit vs MV days"
@@ -110,17 +110,10 @@ multi_plot(icu,
 
 multi_plot(
   comorbidities,
-  x_var = "hypertension",
-  y_var = "dyslipidemia",
-  plot_type = "spider",
-  z_var = c(
-    "depression", "mild_kidney_disease", "ceiling_dico"
-  ),
-  radar_vlabels = stringr::str_to_sentence(
-    c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "ceiling_dico")
-  ),
+  radar = c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "dm"),
   radar_color = "steelblue",
-  radar_ref_lev = "Yes"
+  radar_ref_lev = "Yes",
+  plot_type = "spider"
 )
 
 }

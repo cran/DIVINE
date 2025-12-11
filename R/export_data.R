@@ -54,7 +54,7 @@ export_data <- function(data = NULL, path = NULL, format = NULL) {
   }
 
   # Supported formats (internal canonical names)
-  supported <- c("xlsx", "csv", "rds", "txt", "sav", "dta", "xpt")
+  supported <- c("xlsx", "csv", 'Rdata', "rds", "txt", "sav", "dta", "xpt")
   # Aliases mapping (user-friendly)
   alias_map <- list(sas7bdat = "xpt", xpt = "xpt")
 
@@ -66,7 +66,7 @@ export_data <- function(data = NULL, path = NULL, format = NULL) {
     format <- tolower(as.character(format))
     if (format %in% names(alias_map)) format <- alias_map[[format]]
     if (!(format %in% supported)) {
-      stop("Unsupported format. Use one of: 'xlsx', 'csv', 'rds', 'txt', 'sav', 'dta', 'sas7bdat'.", call. = FALSE)
+      stop("Unsupported format. Use one of: 'xlsx', 'Rdata', 'csv', 'rds', 'txt', 'sav', 'dta', 'sas7bdat'.", call. = FALSE)
     }
   }
 
@@ -84,7 +84,7 @@ export_data <- function(data = NULL, path = NULL, format = NULL) {
     }
     if (ext %in% names(alias_map)) ext <- alias_map[[ext]]
     if (!(ext %in% supported)) {
-      stop("Unsupported extension in 'path'. Use one of: 'xlsx', 'csv', 'rds', 'txt', 'sav', 'dta', 'sas7bdat'.", call. = FALSE)
+      stop("Unsupported extension in 'path'. Use one of: 'xlsx', 'csv', 'Rdata', 'rds', 'txt', 'sav', 'dta', 'sas7bdat'.", call. = FALSE)
     }
     format <- ext
   } else {
@@ -130,6 +130,8 @@ export_data <- function(data = NULL, path = NULL, format = NULL) {
       openxlsx::write.xlsx(x = data, file = path, overwrite = TRUE, colNames = TRUE, borders = "rows", headerStyle = header_style)
     } else if (format == "csv") {
       utils::write.csv(data, file = path, row.names = FALSE)
+    } else if (format == "Rdata") {
+      save(data, file = path)
     } else if (format == "rds") {
       saveRDS(data, file = path)
     } else if (format == "txt") {

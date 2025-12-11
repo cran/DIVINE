@@ -123,7 +123,7 @@ tbl3 <- stats_table(
 # Histogram of age
 multi_plot(
   demographic,
-  x_var = "age",
+  x = "age",
   plot_type = "histogram",
   fill_color = "skyblue",
   title = "Distribution of Age"
@@ -132,8 +132,8 @@ multi_plot(
 # Boxplot of age by sex
 multi_plot(
   demographic,
-  x_var = "sex",
-  y_var = "age",
+  x = "sex",
+  y = "age",
   plot_type = "boxplot",
   group = "sex",
   title = "Age by Sex"
@@ -142,12 +142,10 @@ multi_plot(
 # Spider plot of numeric variables (e.g., compare age, weight, height distributions)
 multi_plot(
   comorbidities,
-  x_var = "hypertension",
-  y_var = "dyslipidemia",
-  plot_type = "spider",
-  z_var = c("depression", "mild_kidney_disease", "ceiling_dico"),
-  radar_vlabels = stringr::str_to_sentence(c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "ceiling_dico")),
+  radar = c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "dm"),
+  radar_labels = stringr::str_to_sentence(c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "dm")),
   radar_color = "blue",
-  radar_ref_lev = "Yes"
+  radar_ref_lev = "Yes",
+  plot_type = "spider"
 )
 

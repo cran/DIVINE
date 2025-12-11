@@ -4,27 +4,27 @@
 #' heatmap, or spider (radar)—either as static ggplot2 objects or interactive Plotly widgets.
 #'
 #' @param data A data frame or tibble containing your data.
-#' @param x_var Character; name of the variable for x‑axis (required for all plot types except spider).
-#' @param y_var Character; name of the variable for y‑axis (required for boxplot, violin, scatter, and heatmap).
+#' @param x Character; name of the variable for x-axis (required for all plot types except spider).
+#' @param y Character; name of the variable for y-axis (required for boxplot, violin, scatter, and heatmap).
 #' @param plot_type Character; one of \code{"histogram"}, \code{"density"}, \code{"boxplot"},
 #'   \code{"barplot"}, \code{"violin"}, \code{"scatter"}, \code{"heatmap"}, or \code{"spider"}.
 #' @param interactive Logical; if \code{TRUE}, returns a Plotly interactive plot
 #'   (not available for spider/radar charts). Default: \code{FALSE}.
-#' @param fill_color Character; fill color for non‑grouped geoms (default \code{"steelblue"}).
+#' @param fill_color Character; fill color for non-grouped geoms (default \code{"steelblue"}).
 #' @param color Character; outline/line color (default \code{"black"}).
 #' @param bin_width Numeric; bin width for histograms. If \code{NULL}, computed automatically.
 #' @param group Character; name of grouping variable (optional).
-#' @param facet_var Character; name of variable to facet by (optional).
-#' @param z_var Character vector; names of numeric variables for spider plot (only for \code{"spider"}).
+#' @param facet Character; name of variable to facet by (optional).
+#' @param radar Character vector; names of exactly 5 variables for spider plot (only for \code{"spider"}).
 #' @param radar_color Character or vector; border/fill color for spider chart (only for \code{"spider"}).
-#' @param radar_vlabels Character or vector; names of the variables for spider chart (only for \code{"spider"}).
-#' @param radar_vlcex Numeric; font size for variable labels in the spider chart (only for \code{"spider"}).
+#' @param radar_labels Character or vector; names of the variables for spider chart (only for \code{"spider"}).
+#' @param radar_cex Numeric; font size for variable labels in the spider chart (only for \code{"spider"}).
 #' @param radar_ref_lev Character; reference level for factors included in the spider chart (only for \code{"spider"}).
 #' @param title Character; plot title (optional).
-#' @param x_lab Character; x‑axis label (defaults to \code{x_var}).
-#' @param y_lab Character; y‑axis label (defaults to \code{y_var} or \code{"Count"}).
+#' @param x_lab Character; x-axis label (defaults to \code{x}).
+#' @param y_lab Character; y-axis label (defaults to \code{y} or \code{"Count"}).
 #' @param legend_position Character; one of \code{"right","left","top","bottom","none"} (default \code{"right"}).
-#' @param axis_text_angle Numeric; rotation angle (degrees) for x‑axis tick labels (default \code{0}).
+#' @param axis_text_angle Numeric; rotation angle (degrees) for x-axis tick labels (default \code{0}).
 #' @param axis_text_size Numeric; size of axis text in pts (default \code{12}).
 #' @param title_size Numeric; size of plot title text in pts (default \code{14}).
 #' @param theme_custom A ggplot2 theme object (default \code{theme_minimal()}).
@@ -33,19 +33,19 @@
 #'   or a \code{plotly} object (if \code{interactive = TRUE}).
 #'
 #' @details
-#' - \strong{Histogram:} requires \code{x_var}; uses \code{geom_histogram()}. Use for continuous numeric variables only.
-#' - \strong{Density:} requires \code{x_var}; uses \code{geom_density()}. It should be numeric.
-#' - \strong{Boxplot/Violin:} require both \code{x_var} and \code{y_var}; automatically groups by \code{x_var} or by \code{group} if provided, with dynamic dodge width.
-#' - \strong{Barplot:} requires \code{x_var}; counts occurrences. Use for categorical variables only.
-#' - \strong{Scatter:} requires both \code{x_var} and \code{y_var}; uses \code{geom_point()}. Both variables must be numeric.
-#' - \strong{Heatmap:} requires both \code{x_var} and \code{y_var}. Both variables must be categorical.
-#' - \strong{Spider:} requires \code{z_var} (vector of variables); uses \code{fmsb::radarchart()}, static only.
+#' - \strong{Histogram:} requires \code{x}; uses \code{geom_histogram()}. Use for continuous numeric variables only.
+#' - \strong{Density:} requires \code{x}; uses \code{geom_density()}. It should be numeric.
+#' - \strong{Boxplot/Violin:} require both \code{x} and \code{y}; automatically groups by \code{x} or by \code{group} if provided, with dynamic dodge width.
+#' - \strong{Barplot:} requires \code{x}; counts occurrences. Use for categorical variables only.
+#' - \strong{Scatter:} requires both \code{x} and \code{y}; uses \code{geom_point()}. Both variables must be numeric.
+#' - \strong{Heatmap:} requires both \code{x} and \code{y}. Both variables must be categorical.
+#' - \strong{Spider:} requires \code{radar} (vector of variables); uses \code{fmsb::radarchart()}, static only.
 #'
 #' @examples
 #'
 #' multi_plot(icu,
-#'   x_var = "icu_enter_days",
-#'   y_var = "vent_mec_start_days",
+#'   x = "icu_enter_days",
+#'   y = "vent_mec_start_days",
 #'   plot_type = "scatter",
 #'   color = "darkred",
 #'   title = "ICU exit vs MV days"
@@ -53,36 +53,29 @@
 #'
 #' multi_plot(
 #'   comorbidities,
-#'   x_var = "hypertension",
-#'   y_var = "dyslipidemia",
-#'   plot_type = "spider",
-#'   z_var = c(
-#'     "depression", "mild_kidney_disease", "ceiling_dico"
-#'   ),
-#'   radar_vlabels = stringr::str_to_sentence(
-#'     c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "ceiling_dico")
-#'   ),
+#'   radar = c("hypertension", "dyslipidemia", "depression", "mild_kidney_disease", "dm"),
 #'   radar_color = "steelblue",
-#'   radar_ref_lev = "Yes"
+#'   radar_ref_lev = "Yes",
+#'   plot_type = "spider"
 #' )
 #'
 #' @importFrom rlang .data
 #' @export
 
 multi_plot <- function(data,
-                       x_var = NULL,
-                       y_var = NULL,
+                       x = NULL,
+                       y = NULL,
                        plot_type = NULL,
                        interactive = FALSE,
                        fill_color = "steelblue",
                        color = "black",
                        bin_width = NULL,
                        group = NULL,
-                       facet_var = NULL,
-                       z_var = NULL,
+                       facet = NULL,
+                       radar = NULL,
                        radar_color = "steelblue",
-                       radar_vlabels = NULL,
-                       radar_vlcex = 1,
+                       radar_labels = NULL,
+                       radar_cex = 1,
                        radar_ref_lev = "Yes",
                        title = NULL,
                        x_lab = NULL,
@@ -92,6 +85,10 @@ multi_plot <- function(data,
                        axis_text_size = 12,
                        title_size = 14,
                        theme_custom = ggplot2::theme_minimal()) {
+  # Keep compatibility: internal names used elsewhere
+  x_var <- x
+  y_var <- y
+
   # Input validation
   if (is.null(plot_type)) stop("Please specify the desired type of plot via 'plot_type' (no default).", call. = FALSE)
   if (!inherits(data, "data.frame")) stop("The data must be a data.frame or tibble.", call. = FALSE)
@@ -105,17 +102,27 @@ multi_plot <- function(data,
     stop("plot_type must be one of: ", paste(valid_plot_types, collapse = ", "), call. = FALSE)
   }
 
-  # Only allow z_var for spider
-  if (!is.null(z_var) & plot_type != "spider") {
-    stop("'z_var' is only used with plot_type = 'spider'. Ignoring 'z_var'.")
-    z_var <- NULL
+  # Only allow radar for spider
+  if (!is.null(radar) & plot_type != "spider") {
+    stop("'radar' is only used with plot_type = 'spider'. Ignoring 'radar'.")
   }
 
-  if (plot_type == "spider" && (is.null(x_var) || is.null(y_var) || is.null(z_var))) {
-    stop("For spider charts you must provide 'x_var', 'y_var' and 'z_var'.", call. = FALSE)
+  # For spider: require radar (exactly 5) and do NOT require x_var or y_var
+  if (plot_type == "spider") {
+    if (is.null(radar)) {
+      stop("For spider charts you must provide 'radar' as a character vector of 5 variable names.", call. = FALSE)
+    }
+    if (!is.character(radar) || length(radar) != 5) {
+      stop("'radar' must be a character vector of exactly 5 variable names.", call. = FALSE)
+    }
+    # ensure variables exist in data
+    missing_vars <- radar[!radar %in% names(data)]
+    if (length(missing_vars) > 0) {
+      stop(sprintf("The following radar were not found in data: %s", paste(missing_vars, collapse = ", ")), call. = FALSE)
+    }
   }
 
-  for (v in c(x_var, y_var, group, facet_var)) {
+  for (v in c(x_var, y_var, group, facet)) {
     if (!is.null(v) && !v %in% names(data)) {
       stop(sprintf("Variable '%s' not found in data.", v), call. = FALSE)
     }
@@ -173,7 +180,7 @@ multi_plot <- function(data,
   x_sym <- if (!is.null(x_var)) rlang::sym(x_var) else NULL
   y_sym <- if (!is.null(y_var)) rlang::sym(y_var) else NULL
   group_sym <- if (!is.null(group)) rlang::sym(group) else NULL
-  facet_sym <- if (!is.null(facet_var)) rlang::sym(facet_var) else NULL
+  facet_sym <- if (!is.null(facet)) rlang::sym(facet) else NULL
 
   # Base plot
   p <- ggplot2::ggplot(data) +
@@ -192,11 +199,11 @@ multi_plot <- function(data,
     aes_hist <- ggplot2::aes(x = !!x_sym)
     if (!is.null(group_sym)) aes_hist <- ggplot2::aes(x = !!x_sym, fill = !!group_sym)
     p <- p + ggplot2::geom_histogram(aes_hist,
-      binwidth = bw,
-      fill     = fill_color,
-      color    = color,
-      alpha    = 0.7,
-      position = if (is.null(group_sym)) "identity" else "dodge"
+                                     binwidth = bw,
+                                     fill     = fill_color,
+                                     color    = color,
+                                     alpha    = 0.7,
+                                     position = if (is.null(group_sym)) "identity" else "dodge"
     )
     y_lab <- y_lab %||% "Count"
   } else if (plot_type == "density") {
@@ -207,9 +214,9 @@ multi_plot <- function(data,
       ggplot2::aes(x = !!x_sym, fill = !!group_sym, group = !!group_sym)
     }
     p <- p + ggplot2::geom_density(aes_den,
-      fill  = fill_color,
-      color = color,
-      alpha = 0.7
+                                   fill  = fill_color,
+                                   color = color,
+                                   alpha = 0.7
     )
   } else if (plot_type %in% c("boxplot", "violin")) {
     if (is.null(x_sym) || is.null(y_sym)) {
@@ -219,10 +226,10 @@ multi_plot <- function(data,
 
     if (is.null(group_sym)) {
       p <- p + geom_fn(ggplot2::aes(x = !!x_sym, y = !!y_sym),
-        fill  = fill_color,
-        color = color,
-        alpha = 0.7,
-        width = 0.7
+                       fill  = fill_color,
+                       color = color,
+                       alpha = 0.7,
+                       width = 0.7
       ) +
         ggplot2::scale_x_discrete()
     } else {
@@ -247,10 +254,10 @@ multi_plot <- function(data,
       ggplot2::aes(x = !!x_sym, fill = !!group_sym)
     }
     p <- p + ggplot2::geom_bar(aes_bar,
-      fill     = fill_color,
-      color    = color,
-      alpha    = 0.7,
-      position = if (is.null(group_sym)) "identity" else ggplot2::position_dodge2(preserve = "single")
+                               fill     = fill_color,
+                               color    = color,
+                               alpha    = 0.7,
+                               position = if (is.null(group_sym)) "identity" else ggplot2::position_dodge2(preserve = "single")
     )
     y_lab <- y_lab %||% "Count"
   } else if (plot_type == "scatter") {
@@ -269,26 +276,25 @@ multi_plot <- function(data,
     ) +
       ggplot2::scale_fill_continuous(name = "Count")
   } else if (plot_type == "spider") {
-    # Error: z_var not specified
-    if (is.null(z_var)) stop("z_var is required for spider charts.", call. = FALSE)
+    # radar must be provided (validated earlier)
 
     # Error: length of labels and variables differ
-    if (!is.null(radar_vlabels) & length(c(x_var, y_var, z_var)) != length(radar_vlabels)) {
+    if (!is.null(radar_labels) & length(radar_labels) != length(radar)) {
       stop(sprintf(
         "You provided %d radar values but %d labels. Make sure each value has a corresponding label.",
-        length(c(x_var, y_var, z_var)), length(radar_vlabels)
+        length(radar), length(radar_labels)
       ), call. = FALSE)
     }
 
     rd <- data |>
-      dplyr::select(dplyr::all_of(c(x_var, y_var, z_var))) |>
+      dplyr::select(dplyr::all_of(radar)) |>
       stats::na.omit()
 
-    vlabels <- radar_vlabels %||% names(rd)
+    vlabels <- radar_labels %||% radar
 
-    # Error: there is a character variable among the selected variables
+    # Error: there is a character variable among the selected variables (we prefer factors for two-level)
     if (any(purrr::map_lgl(rd, is.character))) {
-      stop("Please convert any character variable into two-level factors (e.g. 'No'/'Yes') before proceeding.", call. = FALSE)
+      stop("Please convert any character variable into two-level factors (e.g. 'No'/'Yes') or numeric before proceeding.", call. = FALSE)
     }
 
     # Error: there are different types of variables
@@ -296,8 +302,7 @@ multi_plot <- function(data,
       stop("The selected variables must be either all numeric or all factors with exactly two levels.", call. = FALSE)
     }
 
-    # If the variables are numeric, scale the dataset
-
+    # Numeric variables -> rescale and create chart_df with max/min/mean
     if (all(purrr::map_lgl(rd, is.numeric))) {
       rd_scaled <- rd |>
         purrr::modify(scales::rescale) |>
@@ -308,7 +313,7 @@ multi_plot <- function(data,
       mean_vals <- rd_scaled |> purrr::map_dbl(mean, na.rm = TRUE)
 
       chart_df <- rbind(max_vals, min_vals, mean_vals) |> as.data.frame(stringsAsFactors = FALSE)
-      colnames(chart_df) <- c(x_var, y_var, z_var)
+      colnames(chart_df) <- radar
 
       fmsb::radarchart(
         chart_df,
@@ -320,10 +325,11 @@ multi_plot <- function(data,
         # Customize the axis
         axislabcol = "darkgrey",
         # Variable labels
-        vlcex = radar_vlcex, vlabels = vlabels
+        vlcex = radar_cex, vlabels = vlabels
       )
     }
 
+    # Factor variables -> compute percent of radar_ref_lev
     if (all(purrr::map_lgl(rd, is.factor))) {
       if (any(purrr::map_lgl(rd, ~ nlevels(.x) != 2))) {
         stop("All factors must have exactly two levels. The function expects 'No' and 'Yes'(reference) by default.\nIf you use other labels, use radar_ref_level = '<your_level>' to indicate the reference level.", call. = FALSE)
@@ -336,7 +342,7 @@ multi_plot <- function(data,
       chart_df <- rbind(rep(100, length(perc_vals)), rep(0, length(perc_vals)), perc_vals) |>
         as.data.frame(stringsAsFactors = FALSE)
 
-      colnames(chart_df) <- c(x_var, y_var, z_var)
+      colnames(chart_df) <- radar
 
       fmsb::radarchart(
         chart_df,
@@ -344,11 +350,11 @@ multi_plot <- function(data,
         # Customize the polygon
         pcol = radar_color[1], pfcol = scales::alpha(radar_color[1], 0.1), plwd = 2, plty = 1,
         # Customize the grid
-        cglcol = "darkgrey", cglty = 1, cglwd = 0.8,
+        cglcol = "#5c5c5c", cglty = 1, cglwd = 0.8,
         # Customize the axis
-        axislabcol = "darkgrey",
+        axislabcol = "#5c5c5c",
         # Variable labels
-        vlcex = radar_vlcex, vlabels = vlabels
+        vlcex = radar_cex, vlabels = vlabels
       )
     }
 
@@ -361,13 +367,32 @@ multi_plot <- function(data,
     x = x_lab %||% x_var,
     y = y_lab %||% y_var
   )
-  if (!is.null(facet_var) && plot_type != "spider") {
-    p <- p + ggplot2::facet_wrap(stats::as.formula(paste("~", facet_var)))
+  if (!is.null(facet) && plot_type != "spider") {
+    p <- p + ggplot2::facet_wrap(stats::as.formula(paste("~", facet)))
   }
 
   # Interactive
   if (interactive && plot_type != "spider") {
-    return(plotly::ggplotly(p))
+
+    g <- plotly::ggplotly(p) |>
+      plotly::layout(
+        autosize = TRUE,
+        hoverlabel = list(
+          bgcolor = "lightyellow",
+          bordercolor = "black",
+          font = list(color = "black", size = 12)
+        )
+      )
+
+    if (plot_type == "histogram") {
+      for (i in seq_along(g$x$data)) {
+        g$x$data[[i]]$hovertemplate <- paste0("count: %{y:.0f}<br>",
+          x_var, ": %{x:.2f}<extra></extra>"
+        )
+      }
+    }
+
+    return(g)
   }
 
   return(p)

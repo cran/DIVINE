@@ -7,7 +7,7 @@
 #' @usage data(icu)
 #'
 #'
-#' @format A data frame with 5813 rows and 12 columns
+#' @format A data frame with 5813 rows and 14 columns
 #'  \describe{
 #'   \item{record_id:}{Identifier of each record. This information does not match the real data.}
 #'   \item{covid_wave:}{A factor with levels `Wave 1`, `Wave 2`, `Wave 3`, and `Wave 5`. COVID-19 wave.}
@@ -21,6 +21,8 @@
 #'   \item{vent_mec_no_inv:}{A factor with levels `No` and `Yes`. Did the patient received non-invasive mechanical ventilation?}
 #'   \item{vent_mec_no_inv_start_days:}{Days from hospital admission to start of non-invasive mechanical ventilation.}
 #'   \item{vent_mec_no_inv_end_days:}{Days from hospital admission to end of non-invasive mechanical ventilation.}
+#'   \item{sev_pneum}{A factor with levels `No` and `Yes`. Did the patient required a sustained supply of oxygen therapy greater than FiO2 of 35% to maintain oxygen saturation above 95%?}
+#'   \item{sev_pneum_days}{Days from hospital admission to development of severe pneumonia.}
 #' }
 #'
 #' @references

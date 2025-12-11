@@ -13,10 +13,10 @@
 #'   \item{covid_wave:}{A factor with levels `Wave 1`, `Wave 2`, `Wave 3`, and `Wave 5`. COVID-19 wave.}
 #'   \item{center:}{A factor with levels `Hospital A`, `Hospital B`, `Hospital C`, `Hospital D`, and  `Hospital E`. Center of admission}
 #'   \item{clinical_stability_days:}{Days from hospital admission to clinical stability}
-#'   \item{exitus_days:}{Days from hospital admission to exitus}
-#'   \item{discharge_days:}{Days from hospital admission to discharge}
-#'   \item{discharge:}{A factor with levels `No` and `Yes`. Was the patient discharge from the hospital?}
 #'   \item{exitus:}{A factor with levels `No` and `Yes`. Did the patient die during hospital admission?}
+#'   \item{exitus_days:}{Days from hospital admission to exitus}
+#'   \item{discharge:}{A factor with levels `No` and `Yes`. Was the patient discharge from the hospital?}
+#'   \item{discharge_days:}{Days from hospital admission to discharge}
 #' }
 #'
 #' @references
