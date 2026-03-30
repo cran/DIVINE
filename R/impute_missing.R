@@ -30,6 +30,12 @@
 #' - When imputing factors with a character constant, the constant is added as a new level if needed.
 #' - When passing a custom function, it should return at least one value; if multiple values are returned, only the first is used (with a warning).
 #'
+#' @note
+#' **Caution:** Single imputation methods may introduce bias or underestimate
+#' variability in your data. For more robust handling of missing data, consider
+#' multiple imputation approaches, such as those implemented in the
+#' \href{https://cran.r-project.org/package=mice}{\code{mice}} package.
+#'
 #' @examples
 #' # Impute all numeric columns by their means:
 #' impute_missing(icu)
@@ -47,16 +53,17 @@
 #' )
 #' @importFrom stats na.omit setNames
 #' @export
-impute_missing <- function(data,
-                           method = list(
-                             dplyr::where(is.numeric) ~ "mean",
-                             dplyr::where(is.character) ~ "mode",
-                             dplyr::where(is.factor) ~ "mode"
-                           ),
-                           filter_by = NULL,
-                           drop_all_na = FALSE,
-                           verbose = TRUE) {
-
+impute_missing <- function(
+  data,
+  method = list(
+    dplyr::where(is.numeric) ~ "mean",
+    dplyr::where(is.character) ~ "mode",
+    dplyr::where(is.factor) ~ "mode"
+  ),
+  filter_by = NULL,
+  drop_all_na = FALSE,
+  verbose = TRUE
+) {
   #-- Input validation -------------------------------------------------------
   if (!inherits(data, "data.frame")) {
     stop("`data` must be a data.frame or tibble.", call. = FALSE)
@@ -66,7 +73,10 @@ impute_missing <- function(data,
   }
 
   if (!is.null(filter_by) && !is.character(filter_by)) {
-    stop("`filter_by` must be NULL or a character vector of column names (e.g. c('record_id')).", call. = FALSE)
+    stop(
+      "`filter_by` must be NULL or a character vector of column names (e.g. c('record_id')).",
+      call. = FALSE
+    )
   }
 
   if (!is.logical(drop_all_na) || length(drop_all_na) != 1) {
@@ -80,7 +90,9 @@ impute_missing <- function(data,
   # Helper: compute mode (returns value of same basic type or NA)
   mode_value <- function(x) {
     ux <- unique(x[!is.na(x)])
-    if (length(ux) == 0) return(NA)
+    if (length(ux) == 0) {
+      return(NA)
+    }
     ux[which.max(tabulate(match(x, ux)))]
   }
 
@@ -90,12 +102,22 @@ impute_missing <- function(data,
 
   # Track last method label applied to each column (NA if none)
   methods_applied <- setNames(rep(NA_character_, length(data_cols)), data_cols)
-  col_types_before <- vapply(data, function(x) {
-    if (is.numeric(x)) return("numeric")
-    if (is.factor(x)) return("factor")
-    if (is.character(x)) return("character")
-    class(x)[1]
-  }, character(1))
+  col_types_before <- vapply(
+    data,
+    function(x) {
+      if (is.numeric(x)) {
+        return("numeric")
+      }
+      if (is.factor(x)) {
+        return("factor")
+      }
+      if (is.character(x)) {
+        return("character")
+      }
+      class(x)[1]
+    },
+    character(1)
+  )
 
   # Remove rows with all NAs if requested
   if (drop_all_na) {
@@ -107,7 +129,9 @@ impute_missing <- function(data,
     remove_rows <- prev_rows - nrow(data)
 
     if (remove_rows > 0 && verbose) {
-      message(stringr::str_glue("Removed {remove_rows} rows where all values were NA"))
+      message(stringr::str_glue(
+        "Removed {remove_rows} rows where all values were NA"
+      ))
     }
   }
 
@@ -116,7 +140,13 @@ impute_missing <- function(data,
     sel <- filter_by
     missing_cols <- setdiff(sel, data_cols)
     if (length(missing_cols) > 0) {
-      stop(sprintf("Column(s) in `filter_by` not found: %s", paste(missing_cols, collapse = ", ")), call. = FALSE)
+      stop(
+        sprintf(
+          "Column(s) in `filter_by` not found: %s",
+          paste(missing_cols, collapse = ", ")
+        ),
+        call. = FALSE
+      )
     }
 
     prev_rows <- nrow(data)
@@ -125,21 +155,33 @@ impute_missing <- function(data,
       dplyr::filter(dplyr::if_all(dplyr::all_of(sel), ~ !is.na(.x)))
 
     removed <- prev_rows - nrow(data)
-    if (removed > 0 && verbose) message(sprintf("Removed %d rows that had NA in at least one of the 'filter_by' variables", removed))
+    if (removed > 0 && verbose) {
+      message(sprintf(
+        "Removed %d rows that had NA in at least one of the 'filter_by' variables",
+        removed
+      ))
+    }
   }
 
   # Process each formula in `method`
 
   for (i in method) {
     if (!inherits(i, "formula")) {
-      stop("Each element in 'method' must be a formula of the form <selector> ~ <value>.", call. = FALSE)
+      stop(
+        "Each element in 'method' must be a formula of the form <selector> ~ <value>.",
+        call. = FALSE
+      )
     }
 
     # Evaluate tidyselect on current data
     arg_vars <- tryCatch(
       tidyselect::eval_select(rlang::f_lhs(i), data) |> names(),
       error = function(e) {
-        stop("Error evaluating selector in 'method': ", conditionMessage(e), call. = FALSE)
+        stop(
+          "Error evaluating selector in 'method': ",
+          conditionMessage(e),
+          call. = FALSE
+        )
       }
     )
 
@@ -171,25 +213,47 @@ impute_missing <- function(data,
     check <- setdiff(arg_vars, data_cols)
 
     if (length(check) > 0) {
-      stop(sprintf("Column(s) not found in data: %s", paste(check, collapse = ", ")), call. = FALSE)
+      stop(
+        sprintf(
+          "Column(s) not found in data: %s",
+          paste(check, collapse = ", ")
+        ),
+        call. = FALSE
+      )
     }
 
     # Define custom function to impute missings
     fill_na_custom <- function(x, arg_value) {
-      if (!anyNA(x)) return(x)
+      if (!anyNA(x)) {
+        return(x)
+      }
 
       replacement <- NULL
 
       if (is.function(arg_value)) {
         replacement <- arg_value(x)
-        if (length(replacement) < 1) stop("The custom function must return at least one value.", call. = FALSE)
-        if (length(replacement) > 1) warning("Custom function returned multiple values; using the first one.", call. = FALSE)
+        if (length(replacement) < 1) {
+          stop(
+            "The custom function must return at least one value.",
+            call. = FALSE
+          )
+        }
+        if (length(replacement) > 1) {
+          warning(
+            "Custom function returned multiple values; using the first one.",
+            call. = FALSE
+          )
+        }
         replacement <- replacement[[1]]
       } else if (identical(arg_value, "mean")) {
-        if (!is.numeric(x)) stop("`mean` specified but column is not numeric.", call. = FALSE)
+        if (!is.numeric(x)) {
+          stop("`mean` specified but column is not numeric.", call. = FALSE)
+        }
         replacement <- mean(x, na.rm = TRUE)
       } else if (identical(arg_value, "median")) {
-        if (!is.numeric(x)) stop("`median` specified but column is not numeric.", call. = FALSE)
+        if (!is.numeric(x)) {
+          stop("`median` specified but column is not numeric.", call. = FALSE)
+        }
         replacement <- stats::median(x, na.rm = TRUE)
       } else if (identical(arg_value, "mode")) {
         replacement <- mode_value(x)
@@ -198,7 +262,10 @@ impute_missing <- function(data,
       } else if (is.character(arg_value) && (is.character(x) || is.factor(x))) {
         replacement <- arg_value
       } else {
-        stop("Invalid `arg_value` for the column's type. Use 'mean'/'median' (numeric), 'mode', a numeric constant (numeric columns), a character constant (character/factor), or a function.", call. = FALSE)
+        stop(
+          "Invalid `arg_value` for the column's type. Use 'mean'/'median' (numeric), 'mode', a numeric constant (numeric columns), a character constant (character/factor), or a function.",
+          call. = FALSE
+        )
       }
 
       # If factor and replacement is character, add level if needed
@@ -218,12 +285,21 @@ impute_missing <- function(data,
       }
 
       # Numeric column should receive numeric replacement (except 'mode' allowed)
-      if (is.numeric(x) && !is.numeric(replacement) && !identical(arg_value, "mode")) {
-        stop("Cannot assign a non-numeric replacement to a numeric column (except when using 'mode').", call. = FALSE)
+      if (
+        is.numeric(x) &&
+          !is.numeric(replacement) &&
+          !identical(arg_value, "mode")
+      ) {
+        stop(
+          "Cannot assign a non-numeric replacement to a numeric column (except when using 'mode').",
+          call. = FALSE
+        )
       }
 
       # Expect scalar replacement; if length > 1, use first element
-      if (length(replacement) > 1) replacement <- replacement[[1]]
+      if (length(replacement) > 1) {
+        replacement <- replacement[[1]]
+      }
 
       x[is.na(x)] <- replacement
       x
@@ -246,20 +322,40 @@ impute_missing <- function(data,
     msgs <- c()
 
     if (any(col_types_before == "numeric" & !is.na(methods_applied))) {
-      num_method <- unique(na.omit(methods_applied[col_types_before == "numeric"]))
+      num_method <- unique(na.omit(methods_applied[
+        col_types_before == "numeric"
+      ]))
       if (length(num_method) > 0) {
-        msgs <- c(msgs, paste("Numeric variables imputed with", paste(num_method, collapse = ", ")))
+        msgs <- c(
+          msgs,
+          paste(
+            "Numeric variables imputed with",
+            paste(num_method, collapse = ", ")
+          )
+        )
       }
     }
-    if (any(col_types_before %in% c("character", "factor") & !is.na(methods_applied))) {
-      cat_method <- unique(na.omit(methods_applied[col_types_before %in% c("character", "factor")]))
+    if (
+      any(
+        col_types_before %in% c("character", "factor") & !is.na(methods_applied)
+      )
+    ) {
+      cat_method <- unique(na.omit(methods_applied[
+        col_types_before %in% c("character", "factor")
+      ]))
       if (length(cat_method) > 0) {
-        msgs <- c(msgs, paste("Categorical/Factor variables imputed with", paste(cat_method, collapse = ", ")))
+        msgs <- c(
+          msgs,
+          paste(
+            "Categorical/Factor variables imputed with",
+            paste(cat_method, collapse = ", ")
+          )
+        )
       }
     }
 
     if (length(msgs) > 0) {
-      message("Imputation summary: ", paste(msgs, collapse = "; "))  # NEW
+      message("Imputation summary: ", paste(msgs, collapse = "; ")) # NEW
     }
   }
 

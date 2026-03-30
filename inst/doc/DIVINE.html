@@ -48,8 +48,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -572,6 +573,13 @@ will have missing values replaced in the columns you specified according
 to your chosen strategies. The overall dataset structure (column names
 and types) is preserved where possible; only the number of rows will
 change if you set <code>drop_all_na = TRUE</code>.</p>
+<blockquote>
+<p>⚠️ <strong>Caution:</strong> Single imputation methods may introduce
+bias or underestimate variability in your data. For more robust handling
+of missing data, consider multiple imputation approaches, such as those
+implemented in the <a href="https://cran.r-project.org/package=mice"><code>mice</code></a>
+package.</p>
+</blockquote>
 <p><br></p>
 </div>
 <div id="merging-multiple-tables-with-multi_join" class="section level2" number="4.3">

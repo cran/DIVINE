@@ -5,7 +5,7 @@
 \alias{icu}
 \title{DIVINE's table on icu data}
 \format{
-A data frame with 5813 rows and 14 columns
+A data frame with 5813 rows and 12 columns
 \describe{
 \item{record_id:}{Identifier of each record. This information does not match the real data.}
 \item{covid_wave:}{A factor with levels \verb{Wave 1}, \verb{Wave 2}, \verb{Wave 3}, and \verb{Wave 5}. COVID-19 wave.}
@@ -19,8 +19,8 @@ A data frame with 5813 rows and 14 columns
 \item{vent_mec_no_inv:}{A factor with levels \code{No} and \code{Yes}. Did the patient received non-invasive mechanical ventilation?}
 \item{vent_mec_no_inv_start_days:}{Days from hospital admission to start of non-invasive mechanical ventilation.}
 \item{vent_mec_no_inv_end_days:}{Days from hospital admission to end of non-invasive mechanical ventilation.}
-\item{sev_pneum}{A factor with levels \code{No} and \code{Yes}. Did the patient required a sustained supply of oxygen therapy greater than FiO2 of 35\% to maintain oxygen saturation above 95\%?}
-\item{sev_pneum_days}{Days from hospital admission to development of severe pneumonia.}
+\item{sev_pneum:}{A factor with levels \code{No} and \code{Yes}. Indicates whether the patient presented severe pneumonia.}
+\item{sev_pneum_days:}{Days from hospital admission to end of severe pneumonia.}
 }
 }
 \usage{

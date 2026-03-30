@@ -208,6 +208,11 @@ cleaned_no_empty <- impute_missing(
 
 After running `impute_missing()`, the returned dataset will have missing values replaced in the columns you specified according to your chosen strategies. The overall dataset structure (column names and types) is preserved where possible; only the number of rows will change if you set `drop_all_na = TRUE`.
 
+> ⚠️ **Caution:** Single imputation methods may introduce bias or underestimate
+> variability in your data. For more robust handling of missing data, consider
+> multiple imputation approaches, such as those implemented in the
+> [`mice`](https://cran.r-project.org/package=mice) package.
+
 <br>
 
 ## 3. Merging Multiple Tables with `multi_join()`

@@ -52,6 +52,12 @@ imputes all numeric columns by their medians.
 \item When passing a custom function, it should return at least one value; if multiple values are returned, only the first is used (with a warning).
 }
 }
+\note{
+\strong{Caution:} Single imputation methods may introduce bias or underestimate
+variability in your data. For more robust handling of missing data, consider
+multiple imputation approaches, such as those implemented in the
+\href{https://cran.r-project.org/package=mice}{\code{mice}} package.
+}
 \examples{
 # Impute all numeric columns by their means:
 impute_missing(icu)
