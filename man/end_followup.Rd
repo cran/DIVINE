@@ -11,10 +11,10 @@ A data frame with 5813 rows and 8 columns
 \item{covid_wave:}{A factor with levels \verb{Wave 1}, \verb{Wave 2}, \verb{Wave 3}, and \verb{Wave 5}. COVID-19 wave.}
 \item{center:}{A factor with levels \verb{Hospital A}, \verb{Hospital B}, \verb{Hospital C}, \verb{Hospital D}, and  \verb{Hospital E}. Center of admission}
 \item{clinical_stability_days:}{Days from hospital admission to clinical stability}
-\item{exitus_days:}{Days from hospital admission to exitus}
-\item{discharge_days:}{Days from hospital admission to discharge}
-\item{discharge:}{A factor with levels \code{No} and \code{Yes}. Was the patient discharge from the hospital?}
 \item{exitus:}{A factor with levels \code{No} and \code{Yes}. Did the patient die during hospital admission?}
+\item{exitus_days:}{Days from hospital admission to exitus}
+\item{discharge:}{A factor with levels \code{No} and \code{Yes}. Was the patient discharge from the hospital?}
+\item{discharge_days:}{Days from hospital admission to discharge}
 }
 }
 \usage{
@@ -24,6 +24,10 @@ data(end_followup)
 Information on closure data of patients included in the DIVINE cohort. Data was collected at the end of hospitalization.
 }
 \references{
-Pallarès, N., Tebé, C., Abelenda-Alonso, G., Rombauts, A., Oriol, I., Simonetti, A. F., Rodríguez-Molinero, A., Izquierdo, E., Díaz-Brito, V., Molist, G., Gómez Melis, G., Carratalà, J., Videla, S., & MetroSud and Divine study groups (2023). Characteristics and Outcomes by Ceiling of Care of Subjects Hospitalized with COVID-19 During Four Waves of the Pandemic in a Metropolitan Area: A Multicenter Cohort Study. Infectious diseases and therapy, 12(1), 273–289. https://doi.org/10.1007/s40121-022-00705-w
+Pallarès, N., Carmezim, J., Rodríguez-Molinero, A., Coloma, A., Izquierdo, E.,
+Díaz-Brito, V., Videla, S., Carratalà, J., Gómez-Melis, G., & Tebé, C. (2026).
+A multicenter COVID-19 database from four waves in the south metropolitan area
+of Barcelona, Catalonia. Scientific Data, 13(1), 1228.
+\doi{10.1038/s41597-026-07479-7}
 }
 \keyword{datasets}

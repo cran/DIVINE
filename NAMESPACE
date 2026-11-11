@@ -6,16 +6,22 @@ export(impute_missing)
 export(multi_join)
 export(multi_plot)
 export(stats_table)
-importFrom(dplyr,full_join)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,left_join)
-importFrom(dplyr,right_join)
-importFrom(gtsummary,add_p)
-importFrom(gtsummary,all_continuous)
-importFrom(gtsummary,all_stat_cols)
-importFrom(gtsummary,modify_table_body)
-importFrom(gtsummary,tbl_summary)
+importFrom(dplyr,
+  full_join,
+  inner_join,
+  left_join,
+  right_join
+)
+importFrom(gtsummary,
+  add_p,
+  all_continuous,
+  all_stat_cols,
+  modify_table_body,
+  tbl_summary
+)
 importFrom(purrr,map)
 importFrom(rlang,.data)
-importFrom(stats,na.omit)
-importFrom(stats,setNames)
+importFrom(stats,
+  na.omit,
+  setNames
+)

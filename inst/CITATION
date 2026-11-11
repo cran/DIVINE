@@ -1,11 +1,23 @@
 bibentry(
-  bibtype  = "Article",
-  title    = "Characteristics and Outcomes by Ceiling of Care of Subjects Hospitalized with COVID-19 During Four Waves of the Pandemic in a Metropolitan Area: A Multicenter Cohort Study",
-  author   = "N. Pallarès and C. Tebé and G. Abelenda-Alonso and A. Rombauts and I. Oriol and A. F. Simonetti and A. Rodríguez-Molinero and E. Izquierdo and V. Díaz-Brito and G. Molist and G. Gómez Melis and J. Carratalà and S. Videla and MetroSud and DIVINE study groups",
-  journal  = "Infectious Diseases and Therapy",
-  year     = "2023",
-  volume   = "12",
-  number   = "1",
-  pages    = "273--289",
-  doi      = "10.1007/s40121-022-00705-w"
+  bibtype = "Article",
+  header  = "To cite DIVINE in publications, please use:",
+  title   = "A multicenter {COVID-19} database from four waves in the south metropolitan area of {Barcelona}, {Catalonia}",
+  author  = c(
+    person("Natàlia", "Pallarès"),
+    person("João", "Carmezim"),
+    person("A.", "Rodríguez-Molinero"),
+    person("A.", "Coloma"),
+    person("E.", "Izquierdo"),
+    person("V.", "Díaz-Brito"),
+    person("S.", "Videla"),
+    person("J.", "Carratalà"),
+    person("G.", "Gómez-Melis"),
+    person("Cristian", "Tebé")
+  ),
+  journal = "Scientific Data",
+  year    = "2026",
+  volume  = "13",
+  number  = "1",
+  pages   = "1228",
+  doi     = "10.1038/s41597-026-07479-7"
 )

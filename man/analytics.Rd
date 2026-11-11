@@ -25,6 +25,10 @@ data(analytics)
 Information on laboratory data of patients included in the DIVINE cohort. Data was collected at hospital admission.
 }
 \references{
-Pallarès, N., Tebé, C., Abelenda-Alonso, G., Rombauts, A., Oriol, I., Simonetti, A. F., Rodríguez-Molinero, A., Izquierdo, E., Díaz-Brito, V., Molist, G., Gómez Melis, G., Carratalà, J., Videla, S., & MetroSud and Divine study groups (2023). Characteristics and Outcomes by Ceiling of Care of Subjects Hospitalized with COVID-19 During Four Waves of the Pandemic in a Metropolitan Area: A Multicenter Cohort Study. Infectious diseases and therapy, 12(1), 273–289. https://doi.org/10.1007/s40121-022-00705-w
+Pallarès, N., Carmezim, J., Rodríguez-Molinero, A., Coloma, A., Izquierdo, E.,
+Díaz-Brito, V., Videla, S., Carratalà, J., Gómez-Melis, G., & Tebé, C. (2026).
+A multicenter COVID-19 database from four waves in the south metropolitan area
+of Barcelona, Catalonia. Scientific Data, 13(1), 1228.
+\doi{10.1038/s41597-026-07479-7}
 }
 \keyword{datasets}

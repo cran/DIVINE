@@ -262,10 +262,28 @@ multi_plot <- function(data,
     y_lab <- y_lab %||% "Count"
   } else if (plot_type == "scatter") {
 
-    aes_pt <- ggplot2::aes(x = !!x_sym, y = !!y_sym)
-
-    p <- p + ggplot2::geom_point(aes_pt, color = color, alpha = 0.7)
+    if (is.null(group_sym)) {
+      p <- p +
+        ggplot2::geom_point(
+          ggplot2::aes(x = !!x_sym, y = !!y_sym),
+          color = color,
+          alpha = 0.7
+        )
+    } else {
+      p <- p +
+        ggplot2::geom_point(
+          ggplot2::aes(x = !!x_sym, y = !!y_sym, color = !!group_sym),
+          alpha = 0.7
+        )
+    }
   } else if (plot_type == "heatmap") {
+
+    if (!is.null(group)) {
+      warning(
+        "'group' is ignored for heatmaps; fill represents counts of x_var and y_var combinations."
+      )
+    }
+
     counts <- data |> dplyr::count(!!x_sym, !!y_sym)
 
     p <- p + ggplot2::geom_tile(
